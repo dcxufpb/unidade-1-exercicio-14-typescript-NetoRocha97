@@ -1,5 +1,5 @@
 import { Loja } from "./loja";
-import { ItemVenda } from "./itemVenda";
+import { ItemVenda } from "./itemvenda";
 import { Produto } from './produto';
 
 export class Venda {

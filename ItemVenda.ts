@@ -1,4 +1,3 @@
-import { Venda } from './venda';
 import { Produto } from './produto';
 
 

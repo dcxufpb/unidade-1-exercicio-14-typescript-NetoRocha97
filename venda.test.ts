@@ -1,8 +1,8 @@
 import { Endereco } from './endereco';
-import { Loja } from './loja';
-import { Venda } from './venda';
 import { ItemVenda } from './itemVenda';
 import { Produto } from './produto';
+import { Loja } from './loja';
+import { Venda } from './venda';
 
 function verificaCampoObrigatorio(mensagemEsperada: string, venda: Venda) {
   try {
