@@ -9,17 +9,7 @@ export class Venda {
         public datahora: Date,
         public ccf: string,
         public coo: string,
-        public _itens: Array<ItemVenda> = new Array<ItemVenda>()) {		
-            
-        //this._itens = item;
-
-        }
-
-        
-    //private _itens: Array<ItemVenda>;
-    //public get itens(): Array<ItemVenda> {
-        //return this._itens;
-    //}
+        public _itens: Array<ItemVenda> = new Array<ItemVenda>()) {}
 
     public verificaDuplicacao(codigo: number){
         for(let item of this._itens) {
@@ -68,7 +58,7 @@ export class Venda {
         
     public dados_venda(): string {
 
-        function pegarDH(){
+        function pegarDataHora(){
 
             var data = new Date();
 
@@ -87,7 +77,7 @@ export class Venda {
 
         this.verificaCampoObrigatorio();
 
-        let datahora = pegarDH();
+        let datahora = pegarDataHora();
     
         let _ccf = " CCF:" + this.ccf;
         let _coo = " COO: " + this.coo;
