@@ -9,17 +9,7 @@ export class Venda {
         public datahora: Date,
         public ccf: string,
         public coo: string,
-        public _itens: Array<ItemVenda> = new Array<ItemVenda>()) {		
-            
-        //this._itens = item;
-
-        }
-
-        
-    //private _itens: Array<ItemVenda>;
-    //public get itens(): Array<ItemVenda> {
-        //return this._itens;
-    //}
+        public _itens: Array<ItemVenda> = new Array<ItemVenda>()) {}
 
     public verificaDuplicacao(codigo: number){
         for(let item of this._itens) {
@@ -29,7 +19,7 @@ export class Venda {
         }
         return false
     }
-
+ 
     public validar_item_adicionado(produto : Produto, quantidade : number) : void {
 
         if (produto.valorUnitario <= 0)
