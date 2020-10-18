@@ -1,6 +1,6 @@
 import { Endereco } from './endereco';
-import { ItemVenda } from './itemVenda';
-import { Produto } from './produto';
+import { ItemVenda } from './ItemVenda';
+import { Produto } from './Produto';
 import { Loja } from './loja';
 import { Venda } from './venda';
 

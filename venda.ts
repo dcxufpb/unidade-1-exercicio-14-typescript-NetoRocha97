@@ -1,6 +1,6 @@
 import { Loja } from "./loja";
-import { ItemVenda } from "./itemvenda";
-import { Produto } from './produto';
+import { ItemVenda } from "./Itemvenda";
+import { Produto } from './Produto';
 
 export class Venda {
 
