@@ -252,4 +252,4 @@ test('Exercício 2 - customizado', () => {
 
   //E atualize o texto esperado abaixo
   expect(loja_customizada.dados_loja()).toBe(TEXTO_ESPERADO_EXERCICIO_02_CUSTOMIZADO);
-}); 
+});

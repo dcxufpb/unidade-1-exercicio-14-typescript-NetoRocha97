@@ -10,7 +10,7 @@ function verificaCampoObrigatorio(mensagemEsperada: string, venda: Venda) {
   } catch (e) {
     expect(e.message).toBe(mensagemEsperada);
     }
-} 
+}
 
 function validaItem(mensagemEsperada: string, item: Venda, produto: Produto, quantidade: number) {
   try {
@@ -66,7 +66,10 @@ let paramLoja: Loja = new Loja(NOME_LOJA, paramEndereco, TELEFONE, OBSERVACAO, C
 
 let venda = new Venda(paramLoja, DATAHORA, CCF_VENDA, COO_VENDA);
 
-const MENSAGEM_VENDA_SEM_ITENS = `Produto duplicado`;
+//Mensagens 
+
+const MENSAGEM_VENDA_SEM_ITENS = `Venda sem itens`;
+const MENSAGEM_PRODUTO_DUPLICADO = `Produto duplicado`;
 const MENSAGEM_QUANTIDADE = "Item com quantidade zero ou negativa";
 const MENSAGEM_VALOR_PRODUTO = "Produto com valor unitário zero ou negativo";
 
@@ -150,7 +153,7 @@ test('Sem itens', () =>{
 });
 
 test('Item duplicado', () =>{
-  validaItem(MENSAGEM_VENDA_SEM_ITENS, vendaComDoisItens, produto01, 5)
+  validaItem(MENSAGEM_PRODUTO_DUPLICADO, vendaComDoisItens, produto01, 5)
 });
 
 test('Quantidade do item', () =>{
