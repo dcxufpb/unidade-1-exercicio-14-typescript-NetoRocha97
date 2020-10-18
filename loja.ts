@@ -44,7 +44,7 @@ export class Loja {
 
         return(
 `${this.nome_loja}
-${this.endereco.dados_endereco()}${_telefone}
+${this.endereco.dados_endereco()}${_telefone} 
 ${_observacao}
 ${_cnpj}
 ${_ie}

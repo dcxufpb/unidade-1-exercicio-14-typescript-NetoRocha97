@@ -10,7 +10,7 @@ function verificaCampoObrigatorio(mensagemEsperada: string, venda: Venda) {
   } catch (e) {
     expect(e.message).toBe(mensagemEsperada);
     }
-}
+} 
 
 function validaItem(mensagemEsperada: string, item: Venda, produto: Produto, quantidade: number) {
   try {
