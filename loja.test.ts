@@ -24,6 +24,7 @@ const OBSERVACAO = "Obs 1"
 const CNPJ = "11.111.111/1111-11"
 const INSCRICAO_ESTADUAL = "123456789"
 
+
 const TEXTO_ESPERADO_LOJA_COMPLETA: string = `Loja 1
 Log 1, 10 C1
 Bai 1 - Mun 1 - E1

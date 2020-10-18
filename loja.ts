@@ -1,5 +1,5 @@
 import { Endereco } from "./endereco";
-import { Venda } from "./venda";
+import { Venda } from "./venda"
 
 export class Loja {
 
