@@ -1,5 +1,5 @@
-import { Endereco } from "./endereco"; 
-import { Venda } from "./venda"
+import { Endereco } from "./endereco";
+import { Venda } from "./venda";
 
 export class Loja {
 
@@ -10,11 +10,11 @@ export class Loja {
         public observacao: string, 
         public cnpj: string, 
         public inscricao_estadual: string,
-        public vendas: Array<Venda> = new Array<Venda>()) { }
+        public vendas: Array<Venda> = new Array<Venda>()) {}
         
 
-    public vender(loja: Loja, datahora: Date, ccf: string, coo: string): Venda{
-        let novaVenda = new Venda(loja, datahora, ccf, coo);
+    public vender(loja: Loja, datahora: string, ccf: string, coo: string, tipoPagamento: string, valorPagamento: number): Venda{
+        let novaVenda = new Venda(loja, datahora, ccf, coo, tipoPagamento, valorPagamento);
         this.vendas.push(novaVenda);
         return novaVenda;
     }    
@@ -32,7 +32,7 @@ export class Loja {
     
     }
 
-    public dados_loja(): string {
+    public dadosDaLoja(): string {
 
         let _telefone : string = this.telefone? `Tel ${this.telefone}` : ""
         _telefone = this.endereco.cep && _telefone? " " + _telefone : _telefone
@@ -40,15 +40,16 @@ export class Loja {
         const _observacao : string = this.observacao? this.observacao : ""
   
         const _cnpj : string = `CNPJ: ${this.cnpj}`
-        const _ie : string = `IE: ${this.inscricao_estadual}`
+        const _inscricao_estadual : string = `IE: ${this.inscricao_estadual}`
 
         return(
 `${this.nome_loja}
 ${this.endereco.dados_endereco()}${_telefone}
 ${_observacao}
 ${_cnpj}
-${_ie}
+${_inscricao_estadual}
 `)
 
     }
+
 }

@@ -1,4 +1,4 @@
-import { Produto } from './Produto';
+import { Produto } from './produto';
 
 
 export class ItemVenda {
@@ -6,7 +6,7 @@ export class ItemVenda {
     constructor(
         public item: number,
         public produto: Produto,
-        public quantidade: number) { }
+        public quantidade: number) {}
 
     public verificaCampoObrigatorio(): void {
         
@@ -21,16 +21,11 @@ export class ItemVenda {
 
         }
 
-        public valorTotal(): number {
+        public valorDoItem(): number {
             return this.quantidade * this.produto.valorUnitario;
         }
     
-    public dados_item(): string {
-
-        this.verificaCampoObrigatorio()
-
-        return (
-`${this.item}${this.produto}${this.quantidade}`
-)
-    }
-}
+        public dadosDoItem(): string {
+            return `${this.item} ${this.produto.codigo} ${this.produto.descricao} ${this.quantidade} ${this.produto.unidade} ${this.produto.valorUnitario} ${this.produto.substituicaoTributaria} ${this.valorDoItem().toFixed(2)}`;
+          }
+      }

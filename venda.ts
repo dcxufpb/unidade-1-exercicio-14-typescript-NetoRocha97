@@ -1,36 +1,27 @@
-import { Loja } from "./loja";
-import { ItemVenda } from "./Itemvenda";
-import { Produto } from './Produto';
+import { Loja } from "./loja"
+import { ItemVenda } from "./itemVenda"
+import { Produto } from './produto'
 
 export class Venda {
 
     constructor(
         public loja: Loja,
-        public datahora: Date,
+        public datahora: string,
         public ccf: string,
         public coo: string,
-        public _itens: Array<ItemVenda> = new Array<ItemVenda>()) {		
-            
-        //this._itens = item;
+        public tipoPagamento: string,
+        public valorPagamento: number,
+        public _itens: Array<ItemVenda> = new Array<ItemVenda>()) {}
 
-        }
-
-        
-    //private _itens: Array<ItemVenda>;
-    //public get itens(): Array<ItemVenda> {
-        //return this._itens;
-    //}
-
-    public verificaDuplicacao(codigo: number){
+    public verificaItemDuplicado(codigo: number){
         for(let item of this._itens) {
-            if (item.produto.codigo == codigo){
+            if (item.produto.codigo == codigo)
                 return true
-            }
         }
         return false
     }
 
-    public validar_item_adicionado(produto : Produto, quantidade : number) : void {
+    public validarItemAdicionado(produto : Produto, quantidade : number) : void {
 
         if (produto.valorUnitario <= 0)
             throw new Error(`Produto com valor unitário zero ou negativo`)
@@ -38,11 +29,10 @@ export class Venda {
         if (quantidade <= 0)
             throw new Error(`Item com quantidade zero ou negativa`)
         
-        if (this.verificaDuplicacao(produto.codigo))
+        if (this.verificaItemDuplicado(produto.codigo))
             throw new Error(`Produto duplicado`) 
- 
-     
     }
+
     public verificaCampoObrigatorio(): void {
   
         if (!this.datahora)
@@ -53,83 +43,81 @@ export class Venda {
       
         if(this.coo == "")
             throw new Error("O campo COO da venda é obrigatório")
-        
-        }
+    }
 
     public adicionarItem(venda: Venda, produto: Produto, quantidade: number) {
+
         venda._itens.forEach(itemVenda => {
-            this.validar_item_adicionado(itemVenda.produto, quantidade)
+            this.validarItemAdicionado(itemVenda.produto, quantidade)
             let novoItemVenda = new ItemVenda(itemVenda.item, itemVenda.produto, quantidade)
             this._itens.push(novoItemVenda)
-
         })
-       
     }
         
-    public dados_venda(): string {
+    public dadosDaVenda(): String {
 
-        function pegarDH(){
+      this.verificaCampoObrigatorio();
 
-            var data = new Date();
+      return `${this.datahora}V CCF:${this.ccf} COO: ${this.coo}`;          
+    }
 
-            var dia = data.getDate();           
-            var mes = data.getMonth();          
-            var ano = data.getFullYear();       
-            var hora = data.getHours();         
-            var min = data.getMinutes();        
-            var seg = data.getSeconds();       
+    public dados_Itens(): string {
 
-            var str_data = `${dia}/${mes}/${ano}`;
-            var str_hora = hora + ':' + min + ':' + seg + "V";
+        let _dados = `ITEM CODIGO DESCRICAO QTD UN VL UNIT(R$) ST VL ITEM(R$)\n`
+        this._itens.forEach(i => {
+          _dados = _dados + i.dadosDoItem() + `\n`
+        });
+        return _dados;
+    }
 
-            return str_data + str_hora;
-        }
-
-        this.verificaCampoObrigatorio();
-
-        let datahora = pegarDH();
+    public valorTotal(): number{
+        let total = 0;
+        this._itens.forEach(i => {
+          total += i.valorDoItem();
+        })
+        return total;
+    }
     
-        let _ccf = " CCF:" + this.ccf;
-        let _coo = " COO: " + this.coo;
+    public validaPagamento(): void {
 
-        return (
-`${this.loja.dados_loja()}
-${datahora}${_ccf}${_coo}
-`)
-                
+        if(!(this.tipoPagamento == "dinheiro" || this.tipoPagamento == "cartão de crédito" || this.tipoPagamento == "cartão de débito"))
+            throw new Error("Tipo de pagamento inválido")
+
+        if(this.valorPagamento < this.valorTotal())
+            throw new Error("Operação inválida") 
     }
 
-    public dadosItens(): Array<string>{
-        let dados = new Array<string>("ITEM CODIGO DESCRICAO QTD UN VL UNIT(R$) ST VL ITEM(R$)")
-        for (let item of this._itens){
-            dados.push(item.dados_item())
-        }
-        return dados
+    public calcularRetorno(): number {
 
+        let valorTroco: number;
+
+        if(!(this.tipoPagamento == "dinheiro"))
+            valorTroco = 0;
+
+        else
+            valorTroco = this.valorPagamento - this.valorTotal();
+
+        return valorTroco;
     }
-    public valorTotal(): number {
-		const itemsTotal = this._itens.map((item) => {
-			return item.valorTotal();
-		});
-		let total = 0;
-		itemsTotal.forEach((value) => {
-			total += value;
-		});
 
-		return total;
+    public finalVenda(): string{
+
+        this.validaPagamento();
+
+        let troco: number = this.calcularRetorno();
+
+        return troco.toString();
     }
-  
 
-    public imprimir_cupom(): string {
-
-		let texto_loja = this.loja.dados_loja();
-		let texto_venda = this.dados_venda();
-		let texto_itens = this.dadosItens();
+    public imprimirCupom(): string{
+        this.verificaCampoObrigatorio();
+        let dadosLoja = this.loja.dadosDaLoja();
+        let dadosDaVenda = this.dadosDaVenda();
         let total = this.valorTotal();
+        let cupom = `${dadosLoja}------------------------------\n${dadosDaVenda}\nCUPOM FISCAL\n${this.dados_Itens()}------------------------------\nTOTAL R$ ${total.toFixed(2)}\nDinheiro ${this.valorPagamento.toFixed(2)}\nTroco R$ ${this.calcularRetorno().toFixed(2)}`;
 
-        let cupom: string;
-        cupom = `${texto_loja}------------------------------\n${texto_venda}\n   CUPOM FISCAL\n${texto_itens}\n------------------------------\nTOTAL R$ ${total.toFixed(2)}`;
-		return cupom;
-	}
+    return cupom;
 
+    }
+    
 }

@@ -22,7 +22,14 @@ export class Produto {
             throw new Error("O campo valor unitário do produto é obrigatório")
 
         if(this.substituicaoTributaria == "")
-            throw new Error("O campo valor unitário do produto é obrigatório")
+            throw new Error("O campo substituição tributária do produto é obrigatório")
         
-        }
+    }
+
+    public dadosDoProduto(): String {
+
+        this.verificaCampoObrigatorio();
+  
+        return `${this.codigo}${this.descricao}${this.unidade}${this.valorUnitario}${this.substituicaoTributaria}`;          
+      }
 }
