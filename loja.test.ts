@@ -4,7 +4,7 @@ import { Endereco } from './endereco';
 
 function verificaCampoObrigatorio(mensagemEsperada: string, loja: Loja) {
   try {
-    loja.dados_loja();
+    loja.dadosDaLoja();
   } catch (e) {
     expect(e.message).toBe(mensagemEsperada);
   }
@@ -23,6 +23,7 @@ const TELEFONE = "(11) 1111-1111"
 const OBSERVACAO = "Obs 1"
 const CNPJ = "11.111.111/1111-11"
 const INSCRICAO_ESTADUAL = "123456789"
+
 
 const TEXTO_ESPERADO_LOJA_COMPLETA: string = `Loja 1
 Log 1, 10 C1
@@ -93,7 +94,8 @@ Bai 1 - Mun 1 - E1
 CEP:11111-111 Tel (11) 1111-1111
 Obs 1
 CNPJ: 11.111.111/1111-11
-IE: 123456789`
+IE: 123456789
+`
 
 const TEXTO_ESPERADO_SEM_NUMERO_SEM_COMPLEMENTO_SEM_BAIRRO: string = `Loja 1
 Log 1, s/n
@@ -101,14 +103,24 @@ Mun 1 - E1
 CEP:11111-111 Tel (11) 1111-1111
 Obs 1
 CNPJ: 11.111.111/1111-11
-IE: 123456789`
+IE: 123456789
+`
+
+const TEXTO_ESPERADO_EXERCICIO_02_CUSTOMIZADO : string = `Loja CRVG
+R. Gen. Almério de Moura, 131 Estádio
+São Januário - Rio de Janeiro - RJ
+CEP:20921-060 Tel (21) 91898-1927
+Obs 1
+CNPJ: 12.111.333/12133-12
+IE: 123.456.789.000
+`
 
 
 test('Loja Completa', () => {
   let lojaCompleta: Loja = new Loja(NOME_LOJA, new Endereco(LOGRADOURO, NUMERO, COMPLEMENTO,
     BAIRRO, MUNICIPIO, ESTADO, CEP), TELEFONE, OBSERVACAO, CNPJ,
     INSCRICAO_ESTADUAL);
-  expect(lojaCompleta.dados_loja()).toBe(TEXTO_ESPERADO_LOJA_COMPLETA);
+  expect(lojaCompleta.dadosDaLoja()).toBe(TEXTO_ESPERADO_LOJA_COMPLETA);
 });
 
 test('Nome vazio', () => {
@@ -129,14 +141,14 @@ test('Número zero', () => {
   let numeroZero: Loja = new Loja(NOME_LOJA, new Endereco(LOGRADOURO, 0, COMPLEMENTO,
     BAIRRO, MUNICIPIO, ESTADO, CEP), TELEFONE, OBSERVACAO, CNPJ,
     INSCRICAO_ESTADUAL);
-  expect(numeroZero.dados_loja()).toBe(TEXTO_ESPERADO_SEM_NUMERO);
+  expect(numeroZero.dadosDaLoja()).toBe(TEXTO_ESPERADO_SEM_NUMERO);
 });
 
 test('Complemento vazio', () => {
   let complementoVazio: Loja = new Loja(NOME_LOJA, new Endereco(LOGRADOURO, NUMERO, "",
     BAIRRO, MUNICIPIO, ESTADO, CEP), TELEFONE, OBSERVACAO, CNPJ,
     INSCRICAO_ESTADUAL);
-  expect(complementoVazio.dados_loja())
+  expect(complementoVazio.dadosDaLoja())
     .toBe(TEXTO_ESPERADO_SEM_COMPLEMENTO);
 });
 
@@ -144,7 +156,7 @@ test('Bairro vazio', () => {
   let bairroVazio: Loja = new Loja(NOME_LOJA, new Endereco(LOGRADOURO, NUMERO, COMPLEMENTO,
     "", MUNICIPIO, ESTADO, CEP), TELEFONE, OBSERVACAO, CNPJ,
     INSCRICAO_ESTADUAL);
-  expect(bairroVazio.dados_loja()).toBe(TEXTO_ESPERADO_SEM_BAIRRO);
+  expect(bairroVazio.dadosDaLoja()).toBe(TEXTO_ESPERADO_SEM_BAIRRO);
 });
 
 test('Município vazio', () => {
@@ -167,21 +179,21 @@ test('CEP vazio', () => {
   let cepVazio: Loja = new Loja(NOME_LOJA, new Endereco(LOGRADOURO, NUMERO,
     COMPLEMENTO, BAIRRO, MUNICIPIO, ESTADO, ""), TELEFONE, OBSERVACAO, CNPJ,
     INSCRICAO_ESTADUAL);
-  expect(cepVazio.dados_loja()).toBe(TEXTO_ESPERADO_SEM_CEP);
+  expect(cepVazio.dadosDaLoja()).toBe(TEXTO_ESPERADO_SEM_CEP);
 });
 
 test('Telefone vazio', () => {
   let telefoneVazio: Loja = new Loja(NOME_LOJA, new Endereco(LOGRADOURO, NUMERO,
     COMPLEMENTO, BAIRRO, MUNICIPIO, ESTADO, CEP), "", OBSERVACAO, CNPJ,
     INSCRICAO_ESTADUAL);
-  expect(telefoneVazio.dados_loja()).toBe(TEXTO_ESPERADO_SEM_TELEFONE);
+  expect(telefoneVazio.dadosDaLoja()).toBe(TEXTO_ESPERADO_SEM_TELEFONE);
 });
 
 test('Observação vazia', () => {
   let observacaoVazia: Loja = new Loja(NOME_LOJA, new Endereco(LOGRADOURO, NUMERO,
     COMPLEMENTO, BAIRRO, MUNICIPIO, ESTADO, CEP), TELEFONE, "", CNPJ,
     INSCRICAO_ESTADUAL);
-  expect(observacaoVazia.dados_loja())
+  expect(observacaoVazia.dadosDaLoja())
     .toBe(TEXTO_ESPERADO_SEM_OBSERVACAO);
 });
 
@@ -204,7 +216,7 @@ test('Número zero e complemento vazio', () => {
   let numeroZeroComplementoVazio: Loja = new Loja(NOME_LOJA, new Endereco(LOGRADOURO, 0, "",
     BAIRRO, MUNICIPIO, ESTADO, CEP), TELEFONE, OBSERVACAO, CNPJ,
     INSCRICAO_ESTADUAL);
-  expect(numeroZeroComplementoVazio.dados_loja())
+  expect(numeroZeroComplementoVazio.dadosDaLoja())
     .toBe(TEXTO_ESPERADO_SEM_NUMERO_SEM_COMPLEMENTO);
 });
 
@@ -212,7 +224,7 @@ test('Número zero, complemento e bairro vazios', () => {
   let numeroZeroComplementoVazioBairroVazio: Loja = new Loja(NOME_LOJA,
     new Endereco(LOGRADOURO, 0, "", "", MUNICIPIO, ESTADO, CEP), TELEFONE, OBSERVACAO, CNPJ,
     INSCRICAO_ESTADUAL);
-  expect(numeroZeroComplementoVazioBairroVazio.dados_loja())
+  expect(numeroZeroComplementoVazioBairroVazio.dadosDaLoja())
     .toBe(TEXTO_ESPERADO_SEM_NUMERO_SEM_COMPLEMENTO_SEM_BAIRRO);
 });
 
@@ -220,18 +232,18 @@ test('Número zero, complemento e bairro vazios', () => {
 test('Exercício 2 - customizado', () => {
 
   // Defina seus próprios valores para as variáveis a seguir
-  let nome_loja = "";
-  let logradouro = "";
-  let numero = 0;
-  let complemento = "";
-  let bairro = "";
-  let municipio = "";
-  let estado = "";
-  let cep = "";
-  let telefone = "";
-  let observacao = "";
-  let cnpj = "";
-  let inscricao_estadual = "";
+  let nome_loja = "Loja CRVG";
+  let logradouro = "R. Gen. Almério de Moura";
+  let numero = 131;
+  let complemento = "Estádio";
+  let bairro = "São Januário";
+  let municipio = "Rio de Janeiro";
+  let estado = "RJ";
+  let cep = "20921-060";
+  let telefone = "(21) 91898-1927";
+  let observacao = "Obs 1";
+  let cnpj = "12.111.333/12133-12";
+  let inscricao_estadual = "123.456.789.000";
 
   let endereco_customizado: Endereco = new Endereco(logradouro, numero,
     complemento, bairro, municipio, estado, cep);
@@ -240,7 +252,5 @@ test('Exercício 2 - customizado', () => {
     inscricao_estadual);
 
   //E atualize o texto esperado abaixo
-  expect(loja_customizada.dados_loja()).toBe(
-    `
-`);
+  expect(loja_customizada.dadosDaLoja()).toBe(TEXTO_ESPERADO_EXERCICIO_02_CUSTOMIZADO);
 });
